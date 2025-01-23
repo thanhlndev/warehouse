@@ -1,0 +1,34 @@
+# spring.application.name=identify-service
+server:
+  port: 8080
+  servlet:
+    context-path: /identity
+spring:
+  datasource:
+    url: ${DBMS_CONNECTION:jdbc:mysql://localhost:3306/identity_service?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true}
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    password: ${DBMS_PASSWORD:root}
+    username: ${DBMS_USERNAME:root}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+jwt:
+# key just for development evỉronment
+# generate key: https://generate-random.org/encryption-key-generator
+  signer-key: "kqtBgIEZyEedrwDa63wPeCSCDZc+nJhCpMjkCGnpmTpfdiabBBEadGtCsDgIvLg/"
+  # time duration for token
+  valid-duration: 60
+  refreshable-duration: 120
+
+admin-account:
+  fullname: "admin"
+  username: "admin"
+  password: "admin"
+
+app:
+  services:
+    profile: http://localhost:8081/profile

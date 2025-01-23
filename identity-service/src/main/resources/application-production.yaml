@@ -1,0 +1,6 @@
+
+jwt:
+  signer-key: "{KEY}"
+  # time duration for token
+  valid-duration: 7200
+  refreshable-duration: 72000

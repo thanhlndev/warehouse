@@ -1,0 +1,16 @@
+package cloud.thanhln.identity;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
+
+@SpringBootApplication
+@ComponentScan(basePackages = "cloud.thanhln.identity")
+@EnableFeignClients
+public class IdentityApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(IdentityApplication.class, args);
+    }
+}

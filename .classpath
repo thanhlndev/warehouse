@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="identity-service/src/main/java"/>
+	<classpathentry kind="src" path="identity-service/src/test/java"/>
+	<classpathentry kind="src" path="identity-service/target/generated-sources/annotations"/>
+	<classpathentry kind="src" path="profile-service/src/main/java"/>
+	<classpathentry kind="src" path="profile-service/src/test/java"/>
+	<classpathentry exported="true" kind="lib" path="identity-service/target/identity-0.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="profile-service/.mvn/wrapper/maven-wrapper.jar"/>
+	<classpathentry kind="output" path="identity-service/target/classes"/>
+</classpath>
