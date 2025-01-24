@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import cloud.thanhln.identity.constant.PredefinedRole;
 import cloud.thanhln.identity.domain.Role;
 import cloud.thanhln.identity.domain.User;
+import cloud.thanhln.identity.dto.request.ProfileCreationRequest;
 import cloud.thanhln.identity.dto.request.UserCreationRequest;
 import cloud.thanhln.identity.dto.request.UserUpdateRequest;
 import cloud.thanhln.identity.dto.response.UserResponse;
@@ -53,7 +54,14 @@ public class UserService {
         user.setRoles(roles);
         try {
             user = userRepository.save(user);
-            Object profileResponse = profileClient.createProfile(profileMapper.toProfileCreationRequest(user));
+//            Object profileResponse = profileClient.createProfile(profileMapper.toProfileCreationRequest(user));
+            
+            ProfileCreationRequest profileCreationRequest = profileMapper.toProfileCreationRequest(user);
+            profileCreationRequest.setFullName(request.getFullName());
+            profileCreationRequest.setAddress(request.getAddress());
+            profileCreationRequest.setPhone(request.getPhone());
+            Object profileResponse = profileClient.createProfile(profileCreationRequest);
+            
             log.info(profileResponse.toString());
         } catch (DataIntegrityViolationException exception) {
             throw new AppException(ErrorCode.USER_EXISTED);

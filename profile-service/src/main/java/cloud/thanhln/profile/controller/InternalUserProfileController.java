@@ -1,9 +1,10 @@
 package cloud.thanhln.profile.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import cloud.thanhln.profile.dto.request.ProfileCreationRequest;
 import cloud.thanhln.profile.dto.response.UserProfileResponse;
 import cloud.thanhln.profile.service.UserProfileService;
 import lombok.AccessLevel;
@@ -15,11 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-public class UserProfileController {
+public class InternalUserProfileController {
     UserProfileService userProfileService;
 
-    @GetMapping("/users/{profileId}")
-    UserProfileResponse getProfile(@PathVariable String profileId) {
-        return userProfileService.getProfile(profileId);
+    @PostMapping("/internal/users")
+    UserProfileResponse createProfile(@RequestBody ProfileCreationRequest request) {
+        return userProfileService.createProfile(request);
     }
 }
