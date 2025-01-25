@@ -21,8 +21,8 @@ jwt:
 # generate key: https://generate-random.org/encryption-key-generator
   signer-key: "kqtBgIEZyEedrwDa63wPeCSCDZc+nJhCpMjkCGnpmTpfdiabBBEadGtCsDgIvLg/"
   # time duration for token
-  valid-duration: 60
-  refreshable-duration: 120
+  valid-duration: 3600
+  refreshable-duration: 36000
 
 admin-account:
   fullname: "admin"

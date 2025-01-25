@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cloud.thanhln.identity.dto.request.ApiResponse;
 import cloud.thanhln.identity.dto.request.RoleRequest;
+import cloud.thanhln.identity.dto.response.ApiResponse;
 import cloud.thanhln.identity.dto.response.RoleResponse;
 import cloud.thanhln.identity.service.RoleService;
 import lombok.AccessLevel;

@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cloud.thanhln.identity.dto.request.ApiResponse;
 import cloud.thanhln.identity.dto.request.UserCreationRequest;
 import cloud.thanhln.identity.dto.request.UserUpdateRequest;
+import cloud.thanhln.identity.dto.response.ApiResponse;
 import cloud.thanhln.identity.dto.response.UserResponse;
 import cloud.thanhln.identity.service.UserService;
 import jakarta.validation.Valid;

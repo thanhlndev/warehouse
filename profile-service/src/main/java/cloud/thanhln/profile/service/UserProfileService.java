@@ -1,5 +1,8 @@
 package cloud.thanhln.profile.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import cloud.thanhln.profile.domain.UserProfile;
@@ -32,5 +35,14 @@ public class UserProfileService {
                 userProfileRepository.findById(profileId).orElseThrow(() -> new RuntimeException("Profile not found"));
 
         return userProfileMapper.toUserProfileResponse(thisUser);
+    }
+
+    public List<UserProfileResponse> fetchAllProfile() {
+
+        List<UserProfile> allProfiles = userProfileRepository.findAll();
+
+        return allProfiles.stream()
+                .map(userProfileMapper::toUserProfileResponse)
+                .collect(Collectors.toList());
     }
 }

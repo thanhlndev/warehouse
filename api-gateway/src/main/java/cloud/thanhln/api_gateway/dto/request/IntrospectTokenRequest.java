@@ -1,6 +1,4 @@
-package cloud.thanhln.identity.dto.request;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
+package cloud.thanhln.api_gateway.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,9 +12,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse<T> {
-    private int code;
-    private Object message;
-    private T result;
+public class IntrospectTokenRequest {
+    String token;
 }

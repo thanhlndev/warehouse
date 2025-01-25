@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nimbusds.jose.JOSEException;
 
-import cloud.thanhln.identity.dto.request.ApiResponse;
 import cloud.thanhln.identity.dto.request.AuthenticationRequest;
 import cloud.thanhln.identity.dto.request.IntrospectTokenRequest;
 import cloud.thanhln.identity.dto.request.LogoutRequest;
 import cloud.thanhln.identity.dto.request.RefreshRequest;
+import cloud.thanhln.identity.dto.response.ApiResponse;
 import cloud.thanhln.identity.dto.response.AuthenticationResponse;
 import cloud.thanhln.identity.dto.response.IntrospectTokenResponse;
 import cloud.thanhln.identity.service.AuthenticationService;
