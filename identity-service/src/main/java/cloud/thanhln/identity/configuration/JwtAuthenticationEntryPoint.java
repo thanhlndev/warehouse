@@ -8,7 +8,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cloud.thanhln.identity.dto.request.ApiResponse;
+import cloud.thanhln.identity.dto.response.ApiResponse;
 import cloud.thanhln.identity.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
