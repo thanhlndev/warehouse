@@ -1,5 +1,6 @@
 package cloud.thanhln.identity.service;
 
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import cloud.thanhln.identity.constant.PredefinedRole;
 import cloud.thanhln.identity.domain.Role;
@@ -55,14 +58,16 @@ public class UserService {
         try {
             user = userRepository.save(user);
 //            Object profileResponse = profileClient.createProfile(profileMapper.toProfileCreationRequest(user));
-            
             ProfileCreationRequest profileCreationRequest = profileMapper.toProfileCreationRequest(user);
             profileCreationRequest.setFullName(request.getFullName());
             profileCreationRequest.setAddress(request.getAddress());
             profileCreationRequest.setPhone(request.getPhone());
-            Object profileResponse = profileClient.createProfile(profileCreationRequest);
-            
+            try {
+            	Object profileResponse = profileClient.createProfile(profileCreationRequest);
             log.info(profileResponse.toString());
+            } catch (Throwable e) {
+                throw new AppException(ErrorCode.UNAUTHORIZED);
+            }
         } catch (DataIntegrityViolationException exception) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
@@ -113,5 +118,6 @@ public class UserService {
 
     public void deleteUser(String id) {
         this.userRepository.deleteById(id);
+        this.profileClient.deleteProfileByUserId(id);
     }
 }

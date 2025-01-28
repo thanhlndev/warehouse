@@ -2,6 +2,7 @@ package cloud.thanhln.profile.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,5 +29,10 @@ public class UserProfileController {
     @GetMapping("/users")
     List<UserProfileResponse> getAllProfile() {
         return userProfileService.fetchAllProfile();
+    }
+
+    @DeleteMapping("/users/delete/{userId}")
+    void deleteProfileByUserId(@PathVariable String userId) {
+        userProfileService.deleteProfileByUserId(userId);
     }
 }

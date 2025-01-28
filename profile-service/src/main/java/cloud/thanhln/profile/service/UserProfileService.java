@@ -3,6 +3,7 @@ package cloud.thanhln.profile.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import cloud.thanhln.profile.domain.UserProfile;
@@ -36,7 +37,8 @@ public class UserProfileService {
 
         return userProfileMapper.toUserProfileResponse(thisUser);
     }
-
+    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<UserProfileResponse> fetchAllProfile() {
 
         List<UserProfile> allProfiles = userProfileRepository.findAll();
@@ -44,5 +46,9 @@ public class UserProfileService {
         return allProfiles.stream()
                 .map(userProfileMapper::toUserProfileResponse)
                 .collect(Collectors.toList());
+    }
+
+    public void deleteProfileByUserId(String userId) {
+        userProfileRepository.deleteByUserId(userId);
     }
 }

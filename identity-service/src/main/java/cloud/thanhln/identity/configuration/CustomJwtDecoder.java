@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
 
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jwt.SignedJWT;
 
 import cloud.thanhln.identity.dto.request.IntrospectTokenRequest;
 import cloud.thanhln.identity.dto.response.IntrospectTokenResponse;
@@ -36,23 +37,34 @@ public class CustomJwtDecoder implements JwtDecoder {
     @Override
     public Jwt decode(String token) throws JwtException {
 
-        try {
-            IntrospectTokenResponse response = authenticationService.introspectTokenResponse(
-                    IntrospectTokenRequest.builder().token(token).build());
+//        try {
+//            IntrospectTokenResponse response = authenticationService.introspectTokenResponse(
+//                    IntrospectTokenRequest.builder().token(token).build());
+//
+//            if (!response.isValid())
+//                throw new JwtException("Token invalid");
+//        } catch (JOSEException | ParseException e) {
+//            throw new JwtException(e.getMessage());
+//        }
+//
+//        if (Objects.isNull(nimbusJwtDecoder)) {
+//            SecretKeySpec secretKeySpec = new SecretKeySpec(SIGNER_KEY.getBytes(), "HS512");
+//            nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec)
+//                    .macAlgorithm(MacAlgorithm.HS512)
+//                    .build();
+//        }
+    	try {
+			SignedJWT signedJWT = SignedJWT.parse(token);
 
-            if (!response.isValid())
-                throw new JwtException("Token invalid");
-        } catch (JOSEException | ParseException e) {
-            throw new JwtException(e.getMessage());
-        }
 
-        if (Objects.isNull(nimbusJwtDecoder)) {
-            SecretKeySpec secretKeySpec = new SecretKeySpec(SIGNER_KEY.getBytes(), "HS512");
-            nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec)
-                    .macAlgorithm(MacAlgorithm.HS512)
-                    .build();
-        }
-
-        return nimbusJwtDecoder.decode(token);
+			return new Jwt(token, 
+					signedJWT.getJWTClaimsSet().getIssueTime().toInstant(),
+					signedJWT.getJWTClaimsSet().getExpirationTime().toInstant(),
+					signedJWT.getHeader().toJSONObject(),
+					signedJWT.getJWTClaimsSet().getClaims());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			throw new JwtException("Token invalid");
+		}
     }
 }

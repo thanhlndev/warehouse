@@ -12,11 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import cloud.thanhln.identity.constant.PredefinedRole;
 import cloud.thanhln.identity.domain.Role;
 import cloud.thanhln.identity.domain.User;
-import cloud.thanhln.identity.dto.request.ProfileCreationRequest;
-import cloud.thanhln.identity.mapper.profile.ProfileMapper;
 import cloud.thanhln.identity.repository.RoleRepository;
 import cloud.thanhln.identity.repository.UserRepository;
-import cloud.thanhln.identity.repository.httpclient.ProfileClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,8 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ApplicationInitConfig {
 
     PasswordEncoder passwordEncoder;
-    ProfileClient profileClient;
-    ProfileMapper profileMapper;
+//    ProfileClient profileClient;
+//    ProfileMapper profileMapper;
     // @Bean
     // ApplicationRunner applicationRunner(UserRepository userRepository) {
     // return args -> {
@@ -88,9 +85,9 @@ public class ApplicationInitConfig {
                         .build();
                 userRepository.save(user);
                 
-                ProfileCreationRequest profileCreationRequest = profileMapper.toProfileCreationRequest(user);
-                profileCreationRequest.setFullName(ADMIN_FULLNAME);
-                profileClient.createProfile(profileCreationRequest);
+//                ProfileCreationRequest profileCreationRequest = profileMapper.toProfileCreationRequest(user);
+//                profileCreationRequest.setFullName(ADMIN_FULLNAME);
+//                profileClient.createProfile(profileCreationRequest);
                 
                 log.warn("admin user has been created with default password: admin, please change it");
             }

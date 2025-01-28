@@ -35,7 +35,7 @@ public class UserController {
     // PasswordEncoder passwordEncoder;
 
     // http://localhost:8080/users
-    @PostMapping
+    @PostMapping("/registration")
     ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
         log.info("Controller: Create user");
         return ApiResponse.<UserResponse>builder()

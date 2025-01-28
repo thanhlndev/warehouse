@@ -1,7 +1,5 @@
 package cloud.thanhln.identity.dto.response;
 
-import java.util.Set;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,13 +12,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
+public class UserProfileResponse {
     String id;
-    String username;
-//    String fullName;
-    String email;
-    String password;
-//    String address;
-//    String phone;
-    Set<RoleResponse> roles;
+    String userId;
+    String fullName;
+    String phone;
+    String address;
 }

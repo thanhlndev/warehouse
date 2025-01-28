@@ -3,11 +3,14 @@ package cloud.thanhln.api_gateway.configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.util.CollectionUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -22,6 +25,7 @@ import cloud.thanhln.api_gateway.service.IdentityService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
@@ -34,25 +38,27 @@ public class AuthenticationFilter implements GlobalFilter, Ordered{
 	IdentityService identityService;
 	ObjectMapper objectMapper;
 	
-	@Override
-	public int getOrder() {
-		// TODO Auto-generated method stub
-		return -1;
-	}
+	@NonFinal
+	private String[] PUBLIC_ENDPOINTS = {
+			"/identity/auth/.*",
+			"/identity/users/registration",};
+	
+	@NonFinal
+	@Value("${app.api-prefix}")
+	private String apiPrefix;
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		// TODO Auto-generated method stub
 		log.info("Enter authentication filter...");
+		if (isPublicEnpoint(exchange.getRequest())) {
+            return chain.filter(exchange);}
 		//get token from authorization(identity-service)
 		List<String> authHeaders = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
 		if (CollectionUtils.isEmpty(authHeaders)) 
 			return unauthenticated(exchange.getResponse());
 		String token = authHeaders.getFirst().replace("Bearer", "");
 		log.info("Token: {}", token);
-		//verify token (identity-service)
-//		identityService.introspect(token).subscribe(t -> 
-//		log.info("Result: {}", t.getResult().isValid()));
 		
 		return identityService.introspect(token)
 		        .flatMap(t -> {
@@ -68,6 +74,17 @@ public class AuthenticationFilter implements GlobalFilter, Ordered{
 		            log.error("Error during token introspection: {}", e.getMessage(), e);
 		            return unauthenticated(exchange.getResponse()); // Handle introspection errors
 		        });
+	}
+	
+	@Override
+	public int getOrder() {
+		// TODO Auto-generated method stub
+		return -1;
+	}
+	
+	private boolean isPublicEnpoint(ServerHttpRequest request) {
+		return Arrays.stream(PUBLIC_ENDPOINTS).anyMatch(s -> request.getURI().getPath().matches(apiPrefix + s));
+		
 	}
 	 Mono<Void> unauthenticated(ServerHttpResponse response){
 	        ApiResponse<?> apiResponse = ApiResponse.builder()
