@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 import cloud.thanhln.identity.domain.Role;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, String> {
-}
+public interface RoleRepository extends JpaRepository<Role, String> {}

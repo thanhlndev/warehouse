@@ -3,6 +3,8 @@ package cloud.thanhln.identity.exception;
 import java.util.Map;
 import java.util.Objects;
 
+import jakarta.validation.ConstraintViolation;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import cloud.thanhln.identity.dto.response.ApiResponse;
-import jakarta.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
@@ -63,8 +64,8 @@ public class GlobalExceptionHandle {
         try {
             errorCode = ErrorCode.valueOf(enumKey);
             @SuppressWarnings("rawtypes")
-            ConstraintViolation constraintViolation = ex.getBindingResult().getAllErrors().getFirst()
-                    .unwrap(ConstraintViolation.class);
+            ConstraintViolation constraintViolation =
+                    ex.getBindingResult().getAllErrors().getFirst().unwrap(ConstraintViolation.class);
             attributes = constraintViolation.getConstraintDescriptor().getAttributes();
 
             log.error("Validation error: {}", attributes.toString());

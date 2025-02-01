@@ -2,6 +2,8 @@ package cloud.thanhln.identity.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +20,6 @@ import cloud.thanhln.identity.dto.request.UserUpdateRequest;
 import cloud.thanhln.identity.dto.response.ApiResponse;
 import cloud.thanhln.identity.dto.response.UserResponse;
 import cloud.thanhln.identity.service.UserService;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

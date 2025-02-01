@@ -27,8 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ApplicationInitConfig {
 
     PasswordEncoder passwordEncoder;
-//    ProfileClient profileClient;
-//    ProfileMapper profileMapper;
+    //    ProfileClient profileClient;
+    //    ProfileMapper profileMapper;
     // @Bean
     // ApplicationRunner applicationRunner(UserRepository userRepository) {
     // return args -> {
@@ -54,15 +54,18 @@ public class ApplicationInitConfig {
     @NonFinal
     @Value("${admin-account.password}")
     protected String ADMIN_PASSWORD;
-    
+
     @NonFinal
     @Value("${admin-account.fullname}")
     protected String ADMIN_FULLNAME;
 
     @Bean
-    @ConditionalOnProperty(prefix = "spring", value = "datasource.driverClassName", havingValue = "com.mysql.cj.jdbc.Driver")
+    @ConditionalOnProperty(
+            prefix = "spring",
+            value = "datasource.driverClassName",
+            havingValue = "com.mysql.cj.jdbc.Driver")
     ApplicationRunner applicationRunner(UserRepository userRepository, RoleRepository roleRepository) {
-    	log.info("Initializing application.....");
+        log.info("Initializing application.....");
         return args -> {
             if (userRepository.findByUsername(ADMIN_USERNAME).isEmpty()) {
                 roleRepository.save(Role.builder()
@@ -77,18 +80,19 @@ public class ApplicationInitConfig {
 
                 HashSet<Role> roles = new HashSet<>();
                 roles.add(adminRole);
-                
+
                 User user = User.builder()
                         .username(ADMIN_USERNAME)
                         .password(passwordEncoder.encode(ADMIN_PASSWORD))
                         .roles(roles)
                         .build();
                 userRepository.save(user);
-                
-//                ProfileCreationRequest profileCreationRequest = profileMapper.toProfileCreationRequest(user);
-//                profileCreationRequest.setFullName(ADMIN_FULLNAME);
-//                profileClient.createProfile(profileCreationRequest);
-                
+
+                //                ProfileCreationRequest profileCreationRequest =
+                // profileMapper.toProfileCreationRequest(user);
+                //                profileCreationRequest.setFullName(ADMIN_FULLNAME);
+                //                profileClient.createProfile(profileCreationRequest);
+
                 log.warn("admin user has been created with default password: admin, please change it");
             }
             log.info("Application initialization completed .....");
