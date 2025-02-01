@@ -102,13 +102,14 @@ public class AuthenticationService {
 
             // if (expiryTime.before(new Date()))
             // throw new AppException(ErrorCode.TOKEN_EXPIRED);
-            InvalidatedToken invalidateToken = InvalidatedToken.builder().id(jit).expiredTime(expiryTime).build();
+            InvalidatedToken invalidateToken =
+                    InvalidatedToken.builder().id(jit).expiredTime(expiryTime).build();
             invalidatedTokenRepository.save(invalidateToken);
         } catch (AppException e) {
             log.info("Token already expired");
         }
     }
-    
+
     private String generateToken(User user) {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
@@ -135,13 +136,16 @@ public class AuthenticationService {
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
         SignedJWT signedJWT = SignedJWT.parse(token);
         Date expiryTime = (isRefresh)
-                ? new Date(signedJWT.getJWTClaimsSet().getIssueTime().toInstant()
-                        .plus(REFRESHABLE_DURATION, ChronoUnit.SECONDS).toEpochMilli())
+                ? new Date(signedJWT
+                        .getJWTClaimsSet()
+                        .getIssueTime()
+                        .toInstant()
+                        .plus(REFRESHABLE_DURATION, ChronoUnit.SECONDS)
+                        .toEpochMilli())
                 : signedJWT.getJWTClaimsSet().getExpirationTime();
         boolean verified = signedJWT.verify(verifier);
 
-        if (!(verified && expiryTime.after(new Date())))
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        if (!(verified && expiryTime.after(new Date()))) throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         if (invalidatedTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID()))
             throw new AppException(ErrorCode.UNAUTHENTICATED);
@@ -153,15 +157,15 @@ public class AuthenticationService {
         SignedJWT signedJWT = verifyToken(request.getToken(), true);
         String jit = signedJWT.getJWTClaimsSet().getJWTID();
         Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-        InvalidatedToken invalidateToken = InvalidatedToken.builder().id(jit).expiredTime(expiryTime).build();
+        InvalidatedToken invalidateToken =
+                InvalidatedToken.builder().id(jit).expiredTime(expiryTime).build();
         invalidatedTokenRepository.save(invalidateToken);
         String username = signedJWT.getJWTClaimsSet().getSubject();
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+        User user =
+                userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
         String token = generateToken(user);
         return AuthenticationResponse.builder().token(token).authenticated(true).build();
     }
-
 
     private String buildScope(User user) {
         StringJoiner stringJoiner = new StringJoiner(" ");

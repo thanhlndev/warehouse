@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 import cloud.thanhln.identity.domain.Permission;
 
 @Repository
-public interface PermissionRepository extends JpaRepository<Permission, String> {
-}
+public interface PermissionRepository extends JpaRepository<Permission, String> {}
