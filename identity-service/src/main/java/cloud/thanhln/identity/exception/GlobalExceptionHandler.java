@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
 @Slf4j
-public class GlobalExceptionHandle {
+public class GlobalExceptionHandler {
 
     private static final String MIN_ATTRIBUTES = "min";
 
