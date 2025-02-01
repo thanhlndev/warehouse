@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 import cloud.thanhln.profile.domain.UserProfile;
 
 @Repository
-public interface UserProfileRepository extends Neo4jRepository<UserProfile, String> {}
+public interface UserProfileRepository extends Neo4jRepository<UserProfile, String> {
+
+    void deleteByUserId(String userId);
+}

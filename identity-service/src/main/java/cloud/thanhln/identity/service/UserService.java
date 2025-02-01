@@ -55,14 +55,16 @@ public class UserService {
         try {
             user = userRepository.save(user);
 //            Object profileResponse = profileClient.createProfile(profileMapper.toProfileCreationRequest(user));
-            
             ProfileCreationRequest profileCreationRequest = profileMapper.toProfileCreationRequest(user);
             profileCreationRequest.setFullName(request.getFullName());
             profileCreationRequest.setAddress(request.getAddress());
             profileCreationRequest.setPhone(request.getPhone());
-            Object profileResponse = profileClient.createProfile(profileCreationRequest);
-            
+            try {
+            	Object profileResponse = profileClient.createProfile(profileCreationRequest);
             log.info(profileResponse.toString());
+            } catch (Throwable e) {
+                throw new AppException(ErrorCode.UNAUTHORIZED);
+            }
         } catch (DataIntegrityViolationException exception) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
@@ -113,5 +115,6 @@ public class UserService {
 
     public void deleteUser(String id) {
         this.userRepository.deleteById(id);
+        this.profileClient.deleteProfileByUserId(id);
     }
 }

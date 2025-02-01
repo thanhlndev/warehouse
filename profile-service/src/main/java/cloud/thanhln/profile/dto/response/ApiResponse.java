@@ -1,6 +1,6 @@
-package cloud.thanhln.identity.dto.response;
+package cloud.thanhln.profile.dto.response;
 
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,13 +14,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
-    String id;
-    String username;
-//    String fullName;
-    String email;
-    String password;
-//    String address;
-//    String phone;
-    Set<RoleResponse> roles;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ApiResponse<T> {
+    @Builder.Default
+    private int code = 1000;
+
+    private Object message;
+    private T result;
 }

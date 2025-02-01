@@ -9,5 +9,8 @@ import cloud.thanhln.identity.dto.request.ProfileCreationRequest;
 @Mapper(componentModel = "spring")
 public interface ProfileMapper {
 	@Mapping(target="userId", source = "id")
+	@Mapping(target="fullName", ignore = true)
+	@Mapping(target="address", ignore = true)
+	@Mapping(target="phone", ignore = true)
 	ProfileCreationRequest toProfileCreationRequest(User user);
 }
