@@ -1,6 +1,4 @@
-package cloud.thanhln.profile.dto;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
+package cloud.thanhln.notification.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,15 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse<T> {
-    @Builder.Default
-    private int code = 1000;
+public class Recipient {
 
-    private String message;
-    private T result;
+    String name;
+    String email;
 }

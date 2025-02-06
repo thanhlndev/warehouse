@@ -2,6 +2,9 @@ server:
   port: 8082
   servlet:
     context-path: /notification
+brevo:
+  key: "KEY"
+
 spring:
   application:
     name: notification-service
