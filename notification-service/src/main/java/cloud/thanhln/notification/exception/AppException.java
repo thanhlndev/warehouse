@@ -1,4 +1,4 @@
-package cloud.thanhln.profile.exception;
+package cloud.thanhln.notification.exception;
 
 public class AppException extends RuntimeException {
 

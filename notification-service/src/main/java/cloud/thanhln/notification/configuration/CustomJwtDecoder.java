@@ -1,4 +1,4 @@
-package cloud.thanhln.profile.configuration;
+package cloud.thanhln.notification.configuration;
 
 import java.text.ParseException;
 

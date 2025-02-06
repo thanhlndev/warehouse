@@ -1,4 +1,4 @@
-package cloud.thanhln.profile.configuration;
+package cloud.thanhln.notification.configuration;
 
 import java.io.IOException;
 
@@ -11,8 +11,8 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cloud.thanhln.profile.dto.ApiResponse;
-import cloud.thanhln.profile.exception.ErrorCode;
+import cloud.thanhln.notification.dto.response.ApiResponse;
+import cloud.thanhln.notification.exception.ErrorCode;
 
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
