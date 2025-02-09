@@ -1,0 +1,19 @@
+## spring.application.name=supplier-service
+server:
+  port: 8083
+
+spring:
+  application:
+    name: supplier-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/supplier_db
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
