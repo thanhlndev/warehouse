@@ -19,6 +19,7 @@ public class AuthenticationRequestInterceptor implements RequestInterceptor {
     public void apply(RequestTemplate template) {
         ServletRequestAttributes servletRequestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        @SuppressWarnings("null")
         Enumeration<String> authHeaderNames =
                 servletRequestAttributes.getRequest().getHeaderNames();
         //		while (authHeaderNames.hasMoreElements()) {

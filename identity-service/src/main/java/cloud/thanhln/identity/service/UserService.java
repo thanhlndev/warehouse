@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,6 +44,7 @@ public class UserService {
     PasswordEncoder passwordEncoder;
     ProfileClient profileClient;
     ProfileMapper profileMapper;
+    KafkaTemplate<String, String> kafkaTemplate;
 
     public UserResponse createUserRequest(UserCreationRequest request) {
         log.info("Service: createUserRequest");
@@ -69,7 +71,8 @@ public class UserService {
         } catch (DataIntegrityViolationException exception) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-
+        // public message to kafka
+        kafkaTemplate.send("onboard-successful", "Welcome to Nyx, " + user.getUsername());
         return userMapper.toUserResponse(user);
     }
 
@@ -102,10 +105,9 @@ public class UserService {
     }
 
     public UserResponse updateUser(String id, UserUpdateRequest request) {
-        Optional<User> userOptional = this.userRepository.findById(id);
-        if (userOptional.isEmpty()) {
-            throw new RuntimeException("User not found with id: " + id);
-        }
+        Optional<User> userOptional = Optional.ofNullable(this.userRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id)));
         User currentUser = userOptional.get();
         userMapper.updateUser(currentUser, request);
         currentUser.setPassword(passwordEncoder.encode(request.getPassword()));
