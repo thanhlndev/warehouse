@@ -2,6 +2,7 @@ package cloud.thanhln.identity.service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -13,10 +14,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import cloud.thanhln.event.dto.NotificationEvent;
 import cloud.thanhln.identity.constant.PredefinedRole;
 import cloud.thanhln.identity.domain.Role;
 import cloud.thanhln.identity.domain.User;
-import cloud.thanhln.identity.dto.request.ProfileCreationRequest;
 import cloud.thanhln.identity.dto.request.UserCreationRequest;
 import cloud.thanhln.identity.dto.request.UserUpdateRequest;
 import cloud.thanhln.identity.dto.response.UserResponse;
@@ -47,33 +48,44 @@ public class UserService {
     KafkaTemplate<String, String> kafkaTemplate;
 
     public UserResponse createUserRequest(UserCreationRequest request) {
-        log.info("Service: createUserRequest");
+
+        // request mapp to user object
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        HashSet<Role> roles = new HashSet<Role>();
+        HashSet<Role> roles = new HashSet<>();
+
         roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
 
         user.setRoles(roles);
+        // check email verification
+        user.setEmailVerified(false);
+
         try {
             user = userRepository.save(user);
-            //            Object profileResponse =
-            // profileClient.createProfile(profileMapper.toProfileCreationRequest(user));
-            ProfileCreationRequest profileCreationRequest = profileMapper.toProfileCreationRequest(user);
-            profileCreationRequest.setFullName(request.getFullName());
-            profileCreationRequest.setAddress(request.getAddress());
-            profileCreationRequest.setPhone(request.getPhone());
-            try {
-                Object profileResponse = profileClient.createProfile(profileCreationRequest);
-                log.info(profileResponse.toString());
-            } catch (Throwable e) {
-                throw new AppException(ErrorCode.UNAUTHORIZED);
-            }
         } catch (DataIntegrityViolationException exception) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-        // public message to kafka
-        kafkaTemplate.send("onboard-successful", "Welcome to Nyx, " + user.getUsername());
-        return userMapper.toUserResponse(user);
+        // UserCreationRequest to ProfileCreationRequest
+        var profileRequest = profileMapper.toProfileCreationRequest(request);
+        profileRequest.setUserId(user.getId());
+
+        var profile = profileClient.createProfile(profileRequest);
+        // build notification event
+        NotificationEvent notificationEvent = NotificationEvent.builder()
+                .channel("email")
+                .recipient(request.getEmail())
+                .param(Map.of("username", user.getUsername()))
+                .subject("Welcome to Nyx WMS")
+                .body("Hello, " + request.getUsername())
+                .build();
+
+        // Publish message to kafka
+        kafkaTemplate.send("notification-delivery", notificationEvent.toString());
+
+        var userCreationReponse = userMapper.toUserResponse(user);
+        userCreationReponse.setId(profile.getResult().getId());
+
+        return userCreationReponse;
     }
 
     // @PreAuthorize("hasRole('ADMIN')")
