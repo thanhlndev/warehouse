@@ -38,21 +38,21 @@ public class SupplierService {
     }
 
     @PreAuthorize(
-            "hasAuthority(T(cloud.thanhln.identity.constant.PredefinedPermission).SUPPLIER) or hasRole(T(cloud.thanhln.identity.constant.PredefinedRole).ADMIN_ROLE) or hasRole(T(cloud.thanhln.identity.constant.PredefinedRole).WAREHOUSE_MANAGER_ROLE)")
+            "hasRole(T(cloud.thanhln.identity.constant.PredefinedRole).ADMIN_ROLE) or hasAuthority(T(cloud.thanhln.identity.constant.PredefinedPermission).SUPPLIER) or hasAuthority(T(cloud.thanhln.identity.constant.PredefinedPermission).WAREHOUSE_MANAGER_ROLE)")
     public List<SupplierResponse> fetchAllSuppliers() {
         List<Supplier> suppliers = supplierRespository.findAll();
         return suppliers.stream().map(supplierMapper::toSupplierResponse).collect(Collectors.toList());
     }
 
     @PreAuthorize(
-            "hasAuthority(T(cloud.thanhln.identity.constant.PredefinedPermission).SUPPLIER) or hasRole(T(cloud.thanhln.identity.constant.PredefinedRole).ADMIN_ROLE) or hasRole(T(cloud.thanhln.identity.constant.PredefinedRole).WAREHOUSE_MANAGER_ROLE)")
+            "hasRole(T(cloud.thanhln.identity.constant.PredefinedRole).ADMIN_ROLE) or hasAuthority(T(cloud.thanhln.identity.constant.PredefinedPermission).SUPPLIER) or hasAuthority(T(cloud.thanhln.identity.constant.PredefinedPermission).WAREHOUSE_MANAGER_ROLE)")
     public SupplierResponse getSupplier(String id) {
         Supplier supplier = supplierRespository.findById(id).orElseThrow();
         return supplierMapper.toSupplierResponse(supplier);
     }
 
     @PreAuthorize(
-            "hasAuthority(T(cloud.thanhln.identity.constant.PredefinedPermission).SUPPLIER) or hasRole(T(cloud.thanhln.identity.constant.PredefinedRole).ADMIN_ROLE)")
+            "hasRole(T(cloud.thanhln.identity.constant.PredefinedRole).ADMIN_ROLE) or hasAuthority(T(cloud.thanhln.identity.constant.PredefinedPermission).SUPPLIER)")
     public SupplierResponse updateSupplier(
             @PathVariable String supplierId, @RequestBody SupplierUpdateRequest request) {
         Optional<Supplier> currentSupplier = Optional.ofNullable(
@@ -64,7 +64,7 @@ public class SupplierService {
     }
 
     @PreAuthorize(
-            "hasAuthority(T(cloud.thanhln.identity.constant.PredefinedPermission).SUPPLIER) or hasRole(T(cloud.thanhln.identity.constant.PredefinedRole).ADMIN_ROLE)")
+            "hasRole(T(cloud.thanhln.identity.constant.PredefinedRole).ADMIN_ROLE) or hasAuthority(T(cloud.thanhln.identity.constant.PredefinedPermission).SUPPLIER)")
     public void deleteSupplier(String id) {
         supplierRespository.deleteById(id);
     }

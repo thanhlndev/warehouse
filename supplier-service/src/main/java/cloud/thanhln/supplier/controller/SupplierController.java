@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cloud.thanhln.supplier.dto.request.SupplierCreationRequest;
@@ -24,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/suppliers")
 @Slf4j
 public class SupplierController {
 

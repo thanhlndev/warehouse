@@ -21,15 +21,8 @@ public class AuthenticationRequestInterceptor implements RequestInterceptor {
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         Enumeration<String> authHeaderNames =
                 servletRequestAttributes.getRequest().getHeaderNames();
-        //		while (authHeaderNames.hasMoreElements()) {
-        //			String headerName = authHeaderNames.nextElement();
-        //			template.header(headerName, request.getHeader(headerName));
-        //		}
         if (StringUtils.hasText(authHeaderNames.toString())) {
-            //			while (authHeaderNames.hasMoreElements()) {
-            //				String headerName = authHeaderNames.nextElement();
             template.header("Authorization", authHeaderNames.toString());
-            //			}
         }
     }
 }
