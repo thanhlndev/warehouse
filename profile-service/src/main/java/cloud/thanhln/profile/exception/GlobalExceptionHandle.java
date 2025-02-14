@@ -57,6 +57,7 @@ public class GlobalExceptionHandle {
     @SuppressWarnings("unchecked")
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Object>> handlingValidValidation(MethodArgumentNotValidException ex) {
+        @SuppressWarnings("null")
         String enumKey = ex.getFieldError().getDefaultMessage();
         ErrorCode errorCode = ErrorCode.INVALID_KEY;
         Map<String, Object> attributes = null;
