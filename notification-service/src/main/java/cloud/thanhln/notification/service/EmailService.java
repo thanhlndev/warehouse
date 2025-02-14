@@ -1,5 +1,7 @@
 package cloud.thanhln.notification.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ public class EmailService {
     EmailClient emailClient;
 
     @NonFinal
-    @Value("${brevo.key}")
+    @Value("${notification.brevoKey}")
     String API_KEY;
 
     public EmailResponse sendEmail(SendEmailRequest request) {
@@ -33,7 +35,7 @@ public class EmailService {
                         .name("Nyx Inc")
                         .email("thanhln.dev@gmail.com")
                         .build())
-                .to(request.getTo())
+                .to(List.of(request.getTo()))
                 .subject(request.getSubject())
                 .htmlContent(request.getHtmlContent())
                 .build();

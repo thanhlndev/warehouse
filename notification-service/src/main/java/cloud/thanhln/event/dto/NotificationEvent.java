@@ -1,4 +1,6 @@
-package cloud.thanhln.notification.dto.request;
+package cloud.thanhln.event.dto;
+
+import java.util.Map;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,8 +14,12 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SendEmailRequest {
-    Recipient to;
+public class NotificationEvent {
+
+    String channel;
+    String recipient;
+    String templateCode;
+    Map<String, Object> param;
     String subject;
-    String htmlContent;
+    String body;
 }
