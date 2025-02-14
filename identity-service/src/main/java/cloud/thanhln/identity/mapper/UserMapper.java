@@ -13,11 +13,13 @@ import cloud.thanhln.identity.dto.response.UserResponse;
 public interface UserMapper {
     @Mapping(target = "roles", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "emailVerified", ignore = true)
     User toUser(UserCreationRequest request);
 
     UserResponse toUserResponse(User user);
 
     @Mapping(target = "roles", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "emailVerified", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 }
