@@ -1,4 +1,4 @@
-Collecting workspace information# Warehouse Management System
+# Warehouse Management System
 
 ## Table of Contents
 
