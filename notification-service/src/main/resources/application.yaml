@@ -18,6 +18,6 @@ spring:
         group-id: notification-group
         auto-offset-reset: earliest
         key-serializer: org.apache.kafka.common.serialization.StringSerializer
-        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonDeserializer
         properties:
           spring.json.trusted.packages: "*"
