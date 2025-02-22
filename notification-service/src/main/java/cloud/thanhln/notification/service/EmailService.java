@@ -42,7 +42,7 @@ public class EmailService {
 
         try {
             return emailClient.sendEmail(API_KEY, emailRequest);
-        } catch (Exception e) {
+        } catch (FeignException e) {
             // TODO: handle exception
             throw new AppException(ErrorCode.CANNOT_SEND_EMAIL);
         }
