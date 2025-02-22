@@ -48,8 +48,7 @@ public class UserService {
     KafkaTemplate<String, String> kafkaTemplate;
 
     public UserResponse createUserRequest(UserCreationRequest request) {
-
-        // request mapp to user object
+        
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         HashSet<Role> roles = new HashSet<>();
@@ -57,34 +56,24 @@ public class UserService {
         roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
 
         user.setRoles(roles);
-        // check email verification
         user.setEmailVerified(false);
 
         try {
             user = userRepository.save(user);
-        } catch (DataIntegrityViolationException exception) {
+        } catch (DataIntegrityViolationException exception){
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-        // UserCreationRequest to ProfileCreationRequest
+
         var profileRequest = profileMapper.toProfileCreationRequest(request);
         profileRequest.setUserId(user.getId());
 
         var profile = profileClient.createProfile(profileRequest);
-        // build notification event
-        NotificationEvent notificationEvent = NotificationEvent.builder()
-                .channel("email")
-                .recipient(request.getEmail())
-                .param(Map.of("username", user.getUsername()))
-                .subject("Welcome to Nyx WMS")
-                .body("Hello, " + request.getUsername())
-                .build();
 
         // Publish message to kafka
-        kafkaTemplate.send("notification-delivery", notificationEvent.toString());
+        kafkaTemplate.send("onboard-successful", "Welcome our new member " + user.getUsername());
 
         var userCreationReponse = userMapper.toUserResponse(user);
         userCreationReponse.setId(profile.getResult().getId());
-
         return userCreationReponse;
     }
 
