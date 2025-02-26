@@ -99,13 +99,6 @@ identity-service/
 - Maven 3.9.9
 - Docker
 
-### Clone the Repository
-
-```sh
-git clone <repository-url>
-cd identity-service
-```
-
 ## Running the Application
 
 ### Using Maven
