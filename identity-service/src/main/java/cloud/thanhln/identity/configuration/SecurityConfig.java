@@ -40,19 +40,10 @@ public class SecurityConfig {
                                 .decoder(customJwtDecoder)
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
+
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
         return httpSecurity.build();
     }
-
-    // @Bean
-    // JwtDecoder jwtDecoder() {
-    // SecretKeySpec secretKeySpec = new SecretKeySpec(SIGNER_KEY.getBytes(),
-    // "HS512");
-    // return NimbusJwtDecoder
-    // .withSecretKey(secretKeySpec)
-    // .macAlgorithm(MacAlgorithm.HS512)
-    // .build();
-
-    // }
 
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {

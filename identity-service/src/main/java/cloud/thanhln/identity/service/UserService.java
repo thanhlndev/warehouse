@@ -2,7 +2,6 @@ package cloud.thanhln.identity.service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -14,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import cloud.thanhln.event.dto.NotificationEvent;
 import cloud.thanhln.identity.constant.PredefinedRole;
 import cloud.thanhln.identity.domain.Role;
 import cloud.thanhln.identity.domain.User;
@@ -68,6 +66,7 @@ public class UserService {
         profileRequest.setUserId(user.getId());
 
         var profile = profileClient.createProfile(profileRequest);
+<<<<<<< HEAD
 
         NotificationEvent notificationEvent = NotificationEvent.builder()
                 .channel("EMAIL")
@@ -78,6 +77,19 @@ public class UserService {
 
         // Publish message to kafka
         kafkaTemplate.send("notification-delivery", notificationEvent);
+=======
+        // build notification event
+        //        NotificationEvent notificationEvent = NotificationEvent.builder()
+        //                .channel("email")
+        //                .recipient(request.getEmail())
+        //                .param(Map.of("username", user.getUsername()))
+        //                .subject("Welcome to Nyx WMS")
+        //                .body("Hello, " + request.getUsername())
+        //                .build();
+
+        // Publish message to kafka
+        //        kafkaTemplate.send("notification-delivery", notificationEvent.toString());
+>>>>>>> 9a1dded (web-app)
 
         var userCreationReponse = userMapper.toUserResponse(user);
         userCreationReponse.setId(profile.getResult().getId());

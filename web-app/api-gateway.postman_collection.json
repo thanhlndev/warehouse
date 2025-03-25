@@ -1,0 +1,787 @@
+{
+	"info": {
+		"_postman_id": "5b3015ff-b624-4065-b615-3f7728a3b8a6",
+		"name": "api-gateway",
+		"description": "api gateway for warehouse spring microservices application",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38467006"
+	},
+	"item": [
+		{
+			"name": "identity-s",
+			"item": [
+				{
+					"name": "authentication",
+					"item": [
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8888/api/v1/identity/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"v1",
+										"identity",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "verifyToken",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"token\":\"eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ0aGFuaGxuLmNsb3VkIiwic3ViIjoiYWRtaW4iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImV4cCI6MTczNzg3NTczNSwiaWF0IjoxNzM3ODcyMTM1LCJqdGkiOiIyMzYzYzViYi01ZjIzLTQ5YTMtOGUxZi1hY2I2YmY1ZTZjZmMifQ.YstQ6GApLjf4JsgPYQ-9MV1LiO2sHpo7MPER4t7KVS_TkQvb36hZzjH-eqcTbmz3pgnE9KYDq4ln7ijwNaZT-w\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8888/api/v1/identity/auth/introspect",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"v1",
+										"identity",
+										"auth",
+										"introspect"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"token\":\"{{vault:json-web-token}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8888/api/v1/identity/auth/logout",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"v1",
+										"identity",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "refreshToken",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"token\":\"{{vault:json-web-token}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8888/api/v1/identity/auth/refresh",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8888",
+									"path": [
+										"api",
+										"v1",
+										"identity",
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "USER",
+							"item": [
+								{
+									"name": "createUser",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n        \"username\": \"luongtrung5122\",\r\n        \"fullName\": \"Luong Trung\",\r\n        \"email\": \"luongtrung5122@gmail.com\",\r\n        \"password\": \"12345678\",\r\n        \"address\": \"123 Main Street, LA, USA\",\r\n        \"phone\": \"1234567888\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/users/registration",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"users",
+												"registration"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "fetchUserById",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{vault:authorization-secret}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/users/6e99b3a5-0ca2-4371-a91b-6c7647408741",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"users",
+												"6e99b3a5-0ca2-4371-a91b-6c7647408741"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "fetchAllUser",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ0aGFuaGxuLmNsb3VkIiwic3ViIjoiYWRtaW4iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImV4cCI6MTc0MDE1MjM5NCwiaWF0IjoxNzQwMTQ4Nzk0LCJqdGkiOiI2YTA2ZjIxYS1iYzBkLTQ0YWQtOWUyOS1mNzg3ZmVlZDc5ZjUifQ.iEDyF3-j88X7DRcdaunijjLe5wm4pdNqMJz-xNxXK3b77MvVTs-6ycOlbyb5nS6GDHRwV7m2R0KLVkh17GIozA",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/users",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateUser",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{vault:authorization-secret}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"username\": \"admin\",\r\n  \"fullName\": \"Admin\",\r\n  \"email\": \"admin@example.com\",\r\n  \"password\": \"admin\",\r\n  \"address\": \"123 Main Street, Springfield, USA\",\r\n  \"phone\": \"0364070929\",\r\n  \"roles\": [\"ADMIN\"]\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/users/b50777d3-7bed-43d2-8b22-b5ea12b3c3d9",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"users",
+												"b50777d3-7bed-43d2-8b22-b5ea12b3c3d9"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteUser",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{vault:authorization-secret}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/users/d08e5dda-7fdd-4050-a28b-0cba378616e6",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"users",
+												"d08e5dda-7fdd-4050-a28b-0cba378616e6"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "myinfo",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{vault:authorization-secret}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/users/myinfo",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"users",
+												"myinfo"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Permission",
+							"item": [
+								{
+									"name": "createPermission",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{vault:authorization-secret}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\":\"CREATE_POST\",\r\n    \"description\":\"permission for CREATE_POST\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/permissions",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"permissions"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "fetchAllPermission",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{vault:authorization-secret}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/permissions",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"permissions"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deletePermission",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{vault:authorization-secret}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/permissions/CREATE_DATA",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"permissions",
+												"CREATE_DATA"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Role",
+							"item": [
+								{
+									"name": "createRole",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{vault:authorization-secret}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\":\"ADMIN\",\r\n    \"description\":\"role ADMIN\",\r\n    \"permissions\":[\"CREATE_POST\",\"APPROVE_POST\", \"REJECT_POST\"]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/roles",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"roles"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "fetchAllRole",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{vault:authorization-secret}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/roles",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"roles"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteRole",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{vault:authorization-secret}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8888/api/v1/identity/roles/ADMIN",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8888",
+											"path": [
+												"api",
+												"v1",
+												"identity",
+												"roles",
+												"ADMIN"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			],
+			"description": "authentication and authorization"
+		},
+		{
+			"name": "profile-s",
+			"item": [
+				{
+					"name": "createProfile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"fullName\": \"Johnny3\",\r\n        \"phone\": \"12345678883\",\r\n        \"address\": \"3234 Main Street, LA, USA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/v1/profile/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getProfile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/api/v1/profile/users/3f154bea-10f0-4dc3-951f-b2141d23c9a6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"users",
+								"3f154bea-10f0-4dc3-951f-b2141d23c9a6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllProfile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ0aGFuaGxuLmNsb3VkIiwic3ViIjoiYWRtaW4iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImV4cCI6MTczODA1NzcwOCwiaWF0IjoxNzM4MDU0MTA4LCJqdGkiOiJmOTQ3Yjc2ZC1iMmExLTQ0ZTItYjI0Yy1jMjBlNjk5Yzc1NWEifQ.hSbNFofDfNGV6KEQwbNEBDaZcAwmqgofGwU8S4gYIBMHLAhLZVdzOlsmqVAEmkF25zdpGeVt7yFDofp30wQ3VQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/api/v1/profile/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteProfileByUserId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{vault:authorization-secret}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8888/profile/users/delete/2c90776b-4059-46d9-86cf-dbc17af3ab87",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"profile",
+								"users",
+								"delete",
+								"2c90776b-4059-46d9-86cf-dbc17af3ab87"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "notification-s",
+			"item": [
+				{
+					"name": "sendEmail with brevo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "api-key",
+								"value": "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",
+								"disabled": true
+							},
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n  \"to\": [\n    {\n      \"email\": \"22111062269@hunre.edu.vn\",\n      \"name\": \"Cuc\"\n    }\n  ],\n  \"htmlContent\": \"<p>Hello Luong Thanh, test send email from brevo 1</p>\",\n  \"subject\": \"Welcome to Nyx WMS\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8888/api/v1/notification/email/send",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"api",
+								"v1",
+								"notification",
+								"email",
+								"send"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
