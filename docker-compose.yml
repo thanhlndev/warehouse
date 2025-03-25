@@ -43,7 +43,7 @@ services:
       - warehouse-network
 
   mysql:
-    image: mysql:latest
+    image: "mysql:latest"
     container_name: mysql
     restart: always
     environment:
@@ -57,7 +57,7 @@ services:
       - warehouse-network
 
   neo4j:
-    image: neo4j:latest
+    image: "neo4j:latest"
     container_name: neo4j
     restart: always
     environment:

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # Warehouse Management System
+=======
+>>>>>>> 9a1dded (web-app)
 
 ## Table of Contents
 
@@ -73,7 +76,13 @@ cd warehouse
 ```
 
 ## Running the Application
-
+### Pull Image
+```sh
+docker pull bitnami/kafka:latest
+docker pull bitnami/postgresql:latest
+docker pull mysql:latest
+docker pull neo4j:latest
+```
 ### Using Docker Compose
 
 ```sh
