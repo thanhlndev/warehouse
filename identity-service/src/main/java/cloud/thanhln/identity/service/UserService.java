@@ -45,28 +45,48 @@ public class UserService {
     ProfileMapper profileMapper;
 
     public UserResponse createUserRequest(UserCreationRequest request) {
-        log.info("Service: createUserRequest");
-        User user = userMapper.toUser(request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        HashSet<Role> roles = new HashSet<Role>();
-        roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
+        log.info("Service: createUserRequest, username={}", request.getUsername());
 
+        if (userRepository.existsByUsername(request.getUsername())) {
+            log.warn("Username {} already exists", request.getUsername());
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+
+        User user = userMapper.toUser(request);
+        if (user.getUsername() == null || user.getUsername().isBlank()) {
+            log.error("Invalid username: {}", request);
+            throw new AppException(ErrorCode.USERNAME_INVALID);
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        HashSet<Role> roles = new HashSet<>();
+        roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
         user.setRoles(roles);
+
+        log.info(
+                "User before save: id={}, username={}, email={}, roles={}",
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRoles());
+
         try {
             user = userRepository.save(user);
-            //            Object profileResponse =
-            // profileClient.createProfile(profileMapper.toProfileCreationRequest(user));
             ProfileCreationRequest profileCreationRequest = profileMapper.toProfileCreationRequest(user);
             profileCreationRequest.setFullName(request.getFullName());
             profileCreationRequest.setAddress(request.getAddress());
             profileCreationRequest.setPhone(request.getPhone());
+
             try {
                 Object profileResponse = profileClient.createProfile(profileCreationRequest);
-                log.info(profileResponse.toString());
+                log.info("Profile response: {}", profileResponse);
             } catch (Throwable e) {
+                log.error("Profile creation failed: {}", e.getMessage(), e);
                 throw new AppException(ErrorCode.UNAUTHORIZED);
             }
-        } catch (DataIntegrityViolationException exception) {
+        } catch (DataIntegrityViolationException e) {
+            log.error(
+                    "Data integrity violation: constraint={}, message={}", e.getMessage(), e.getMostSpecificCause(), e);
             throw new AppException(ErrorCode.USER_EXISTED);
         }
 

@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import cloud.thanhln.identity.constant.PredefinedRole;
+import cloud.thanhln.identity.domain.Permission;
 import cloud.thanhln.identity.domain.Role;
 import cloud.thanhln.identity.domain.User;
+import cloud.thanhln.identity.repository.PermissionRepository;
 import cloud.thanhln.identity.repository.RoleRepository;
 import cloud.thanhln.identity.repository.UserRepository;
 import lombok.AccessLevel;
@@ -64,7 +66,8 @@ public class ApplicationInitConfig {
             prefix = "spring",
             value = "datasource.driverClassName",
             havingValue = "com.mysql.cj.jdbc.Driver")
-    ApplicationRunner applicationRunner(UserRepository userRepository, RoleRepository roleRepository) {
+    ApplicationRunner applicationRunner(
+            UserRepository userRepository, RoleRepository roleRepository, PermissionRepository permissionRepository) {
         log.info("Initializing application.....");
         return args -> {
             if (userRepository.findByUsername(ADMIN_USERNAME).isEmpty()) {
@@ -80,7 +83,29 @@ public class ApplicationInitConfig {
 
                 HashSet<Role> roles = new HashSet<>();
                 roles.add(adminRole);
-
+                // Tạo permission
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinedRole.WAREHOUSE_MANAGER)
+                        .description(PredefinedRole.des_WM)
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinedRole.INVENTORY_CONTROLLER)
+                        .description(PredefinedRole.des_IC)
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinedRole.WAREHOUSE_OPERATOR)
+                        .description(PredefinedRole.des_WO)
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinedRole.ORDER_FULFILLMENT)
+                        .description(PredefinedRole.des_OF)
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinedRole.SUPPLIER)
+                        .description(PredefinedRole.des_SUPPLIER)
+                        .build());
+                log.warn("Permissions has been created!");
+                // Tạo user ADMIN
                 User user = User.builder()
                         .username(ADMIN_USERNAME)
                         .password(passwordEncoder.encode(ADMIN_PASSWORD))

@@ -1,5 +1,6 @@
 package cloud.thanhln.identity.dto.request;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -19,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 public class UserCreationRequest {
     @NotNull
     @Size(min = 3, message = "USERNAME_INVALID")
+    @Column(name = "username", unique = true, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
     String username;
 
     @NotNull
