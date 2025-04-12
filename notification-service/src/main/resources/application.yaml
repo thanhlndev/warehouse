@@ -3,7 +3,7 @@ server:
   servlet:
     context-path: /notification
 notification:
-  brevoKey: "key"
+  brevoKey: "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"
   brevoApiUrl: "https://api.brevo.com/"
 
 spring:

@@ -46,38 +46,37 @@ public class UserService {
     KafkaTemplate<String, String> kafkaTemplate;
 
     public UserResponse createUserRequest(UserCreationRequest request) {
-        
-       User user = userMapper.toUser(request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        HashSet<Role> roles = new HashSet<>();
 
-        roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
+        //        User user = userMapper.toUser(request);
+        //        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        //        HashSet<Role> roles = new HashSet<>();
+        //
+        //        roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
+        //
+        //        user.setRoles(roles);
+        //        user.setEmailVerified(false);
+        //
+        //        try {
+        //            user = userRepository.save(user);
+        //        } catch (DataIntegrityViolationException exception) {
+        //            throw new AppException(ErrorCode.USER_EXISTED);
+        //        }
+        //
+        //        var profileRequest = profileMapper.toProfileCreationRequest(request);
+        //        profileRequest.setUserId(user.getId());
+        //
+        //        var profile = profileClient.createProfile(profileRequest);
 
-        user.setRoles(roles);
-        user.setEmailVerified(false);
-
-        try {
-            user = userRepository.save(user);
-        } catch (DataIntegrityViolationException exception){
-            throw new AppException(ErrorCode.USER_EXISTED);
-        }
-
-        var profileRequest = profileMapper.toProfileCreationRequest(request);
-        profileRequest.setUserId(user.getId());
-
-        var profile = profileClient.createProfile(profileRequest);
-<<<<<<< HEAD
-
-        NotificationEvent notificationEvent = NotificationEvent.builder()
-                .channel("EMAIL")
-                .recipient(request.getEmail())
-                .subject("Welcome to Nyx WSM")
-                .body("Hello, " + request.getUsername())
-                .build();
+        //        NotificationEvent notificationEvent = NotificationEvent.builder()
+        //                .channel("EMAIL")
+        //                .recipient(request.getEmail())
+        //                .subject("Welcome to Nyx WSM")
+        //                .body("Hello, " + request.getUsername())
+        //                .build();
 
         // Publish message to kafka
-        kafkaTemplate.send("notification-delivery", notificationEvent);
-=======
+        //        kafkaTemplate.send("notification-delivery", notificationEvent);
+
         // build notification event
         //        NotificationEvent notificationEvent = NotificationEvent.builder()
         //                .channel("email")
@@ -89,7 +88,33 @@ public class UserService {
 
         // Publish message to kafka
         //        kafkaTemplate.send("notification-delivery", notificationEvent.toString());
->>>>>>> 9a1dded (web-app)
+
+        //        var userCreationReponse = userMapper.toUserResponse(user);
+        //        userCreationReponse.setId(profile.getResult().getId());
+        //
+        //        return userCreationReponse;
+        User user = userMapper.toUser(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        HashSet<Role> roles = new HashSet<>();
+
+        roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
+
+        user.setRoles(roles);
+        user.setEmailVerified(false);
+
+        try {
+            user = userRepository.save(user);
+        } catch (DataIntegrityViolationException exception) {
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+
+        var profileRequest = profileMapper.toProfileCreationRequest(request);
+        profileRequest.setUserId(user.getId());
+
+        var profile = profileClient.createProfile(profileRequest);
+
+        // Publish message to kafka
+        kafkaTemplate.send("onboard-successful", "Welcome our new member " + user.getUsername());
 
         var userCreationReponse = userMapper.toUserResponse(user);
         userCreationReponse.setId(profile.getResult().getId());

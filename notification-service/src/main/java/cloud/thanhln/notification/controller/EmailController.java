@@ -1,5 +1,6 @@
 package cloud.thanhln.notification.controller;
 
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,5 +28,10 @@ public class EmailController {
         return ApiResponse.<EmailResponse>builder()
                 .result(emailService.sendEmail(request))
                 .build();
+    }
+
+    @KafkaListener(topics = "onboard-successful")
+    public void listen(String message) {
+        log.info("Message received: {}", message);
     }
 }
