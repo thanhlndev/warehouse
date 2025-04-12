@@ -46,14 +46,48 @@ public class UserService {
     KafkaTemplate<String, String> kafkaTemplate;
 
     public UserResponse createUserRequest(UserCreationRequest request) {
-        
-       User user = userMapper.toUser(request);
+        log.info("Service: createUserRequest, username={}", request.getUsername());
+
+        if (userRepository.existsByUsername(request.getUsername())) {
+            log.warn("Username {} already exists", request.getUsername());
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+
+        User user = userMapper.toUser(request);
+        if (user.getUsername() == null || user.getUsername().isBlank()) {
+            log.error("Invalid username: {}", request);
+            throw new AppException(ErrorCode.USERNAME_INVALID);
+        }
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         HashSet<Role> roles = new HashSet<>();
 
         roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
-
         user.setRoles(roles);
+
+        log.info(
+                "User before save: id={}, username={}, email={}, roles={}",
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRoles());
+
+        try {
+            user = userRepository.save(user);
+            ProfileCreationRequest profileCreationRequest = profileMapper.toProfileCreationRequest(user);
+            profileCreationRequest.setFullName(request.getFullName());
+            profileCreationRequest.setAddress(request.getAddress());
+            profileCreationRequest.setPhone(request.getPhone());
+
+            try {
+                Object profileResponse = profileClient.createProfile(profileCreationRequest);
+                log.info("Profile response: {}", profileResponse);
+            } catch (Throwable e) {
+                log.error("Profile creation failed: {}", e.getMessage(), e);
+                throw new AppException(ErrorCode.UNAUTHORIZED);
+            }
+        } catch (DataIntegrityViolationException e) {
+            log.error(
+                    "Data integrity violation: constraint={}, message={}", e.getMessage(), e.getMostSpecificCause(), e);
         user.setEmailVerified(false);
 
         try {
@@ -66,30 +100,6 @@ public class UserService {
         profileRequest.setUserId(user.getId());
 
         var profile = profileClient.createProfile(profileRequest);
-<<<<<<< HEAD
-
-        NotificationEvent notificationEvent = NotificationEvent.builder()
-                .channel("EMAIL")
-                .recipient(request.getEmail())
-                .subject("Welcome to Nyx WSM")
-                .body("Hello, " + request.getUsername())
-                .build();
-
-        // Publish message to kafka
-        kafkaTemplate.send("notification-delivery", notificationEvent);
-=======
-        // build notification event
-        //        NotificationEvent notificationEvent = NotificationEvent.builder()
-        //                .channel("email")
-        //                .recipient(request.getEmail())
-        //                .param(Map.of("username", user.getUsername()))
-        //                .subject("Welcome to Nyx WMS")
-        //                .body("Hello, " + request.getUsername())
-        //                .build();
-
-        // Publish message to kafka
-        //        kafkaTemplate.send("notification-delivery", notificationEvent.toString());
->>>>>>> 9a1dded (web-app)
 
         var userCreationReponse = userMapper.toUserResponse(user);
         userCreationReponse.setId(profile.getResult().getId());

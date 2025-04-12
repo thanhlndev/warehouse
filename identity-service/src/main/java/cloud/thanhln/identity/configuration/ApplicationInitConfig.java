@@ -107,7 +107,29 @@ public class ApplicationInitConfig {
                 // Create admin account
                 HashSet<Role> roles = new HashSet<>();
                 roles.add(adminRole);
-
+                // Tạo permission
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinedRole.WAREHOUSE_MANAGER)
+                        .description(PredefinedRole.des_WM)
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinedRole.INVENTORY_CONTROLLER)
+                        .description(PredefinedRole.des_IC)
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinedRole.WAREHOUSE_OPERATOR)
+                        .description(PredefinedRole.des_WO)
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinedRole.ORDER_FULFILLMENT)
+                        .description(PredefinedRole.des_OF)
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinedRole.SUPPLIER)
+                        .description(PredefinedRole.des_SUPPLIER)
+                        .build());
+                log.warn("Permissions has been created!");
+                // Tạo user ADMIN
                 User user = User.builder()
                         .username(ADMIN_USERNAME)
                         .password(passwordEncoder.encode(ADMIN_PASSWORD))
