@@ -28,6 +28,15 @@ spring:
         predicates:
         - Path=${app.api-prefix}/profile/users/**
 
+      - id: notification-service
+        uri: http://localhost:8082
+        predicates:
+        - Path=${app.api-prefix}/notification/**
+
+      - id: supplier-service
+        uri: http://localhost:8083
+        predicates:
+        - Path=${app.api-prefix}/supplier/**
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG

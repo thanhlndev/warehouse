@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import cloud.thanhln.identity.constant.PredefinePermission;
 import cloud.thanhln.identity.constant.PredefinedRole;
 import cloud.thanhln.identity.domain.Permission;
 import cloud.thanhln.identity.domain.Role;
@@ -71,6 +72,7 @@ public class ApplicationInitConfig {
         log.info("Initializing application.....");
         return args -> {
             if (userRepository.findByUsername(ADMIN_USERNAME).isEmpty()) {
+                // Create role
                 roleRepository.save(Role.builder()
                         .name(PredefinedRole.USER_ROLE)
                         .description("User role")
@@ -80,7 +82,29 @@ public class ApplicationInitConfig {
                         .name(PredefinedRole.ADMIN_ROLE)
                         .description("Admin role")
                         .build());
+                // Create Permission
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinePermission.WAREHOUSE_MANAGER)
+                        .description("Quản lý kho hàng")
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinePermission.INVENTORY_CONTROLLER)
+                        .description("Kiểm kê kho hàng")
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinePermission.WAREHOUSE_OPERATOR)
+                        .description("Nhân viên kho hàng")
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinePermission.ORDER_FULFILLMENT)
+                        .description("Nhân viên xử lý đơn hàng")
+                        .build());
+                permissionRepository.save(Permission.builder()
+                        .name(PredefinePermission.SUPPLIER)
+                        .description("Nhà cung cấp")
+                        .build());
 
+                // Create admin account
                 HashSet<Role> roles = new HashSet<>();
                 roles.add(adminRole);
                 // Tạo permission

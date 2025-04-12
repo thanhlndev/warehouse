@@ -33,5 +33,20 @@
     "name": "jwt.valid-duration",
     "type": "java.lang.String",
     "description": "A description for 'jwt.valid-duration'"
+  },
+  {
+    "name": "spring.kafka.consumer.key-serializer",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.kafka.consumer.key-serializer'"
+  },
+  {
+    "name": "spring.kafka.consumer.value-serializer",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.kafka.consumer.value-serializer'"
+  }
+]}{
+    "name": "spring.kafka.consumer.value-serializer",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.kafka.consumer.value-serializer'"
   }
 ]}

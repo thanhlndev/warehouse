@@ -41,12 +41,15 @@ public class AuthenticationFilter implements GlobalFilter, Ordered{
 	@NonFinal
 	private String[] PUBLIC_ENDPOINTS = {
 			"/identity/auth/.*",
-			"/identity/users/registration",};
+			"/identity/users/registration",
+			"/notification/email/send",
+	};
 	
 	@NonFinal
 	@Value("${app.api-prefix}")
 	private String apiPrefix;
 
+	@SuppressWarnings("null")
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		// TODO Auto-generated method stub

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import cloud.thanhln.notification.dto.request.EmailRequest;
 import cloud.thanhln.notification.dto.response.EmailResponse;
 
-@FeignClient(name = "email-client", url = "https://api.brevo.com")
+@FeignClient(name = "email-client", url = "${notification.brevoApiUrl}")
 public interface EmailClient {
 
     @PostMapping(value = "/v3/smtp/email", produces = MediaType.APPLICATION_JSON_VALUE)

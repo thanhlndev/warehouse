@@ -1,0 +1,116 @@
+name: warehouse
+
+networks:
+  warehouse-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  mysql_data:
+  neo4j_data:
+
+services:
+  kafka:
+    image: "bitnami/kafka:latest"
+    container_name: kafka
+    hostname: kafka
+    ports:
+      - "9094:9094"
+    environment:
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+    networks:
+      - warehouse-network
+
+  postgres-supplier:
+    image: "bitnami/postgresql:latest"
+    container_name: postgres_supplier
+    restart: always
+    environment:
+      POSTGRES_DB: supplier_service
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - warehouse-network
+
+  mysql:
+    image: "mysql:latest"
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: identity_service
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - warehouse-network
+
+  neo4j:
+    image: "neo4j:latest"
+    container_name: neo4j
+    restart: always
+    environment:
+      - NEO4J_AUTH=neo4j/neo4j612435
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+    networks:
+      - warehouse-network
+
+  # supplier-service:
+  #   image: <account>/supplier-service
+  #   container_name: supplier-service
+  #   restart: always
+  #   depends_on:
+  #     - postgres-supplier
+  #     - kafka
+  #   environment:
+  #     SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-supplier:5432/supplier_db
+  #     SPRING_DATASOURCE_USERNAME: admin
+  #     SPRING_DATASOURCE_PASSWORD: admin
+  #     KAFKA_BROKER: kafka:9092
+  #   ports:
+  #     - "8081:8081"
+  #   networks:
+  #     - warehouse-network
+
+  # identity-service:
+  #   image: <account>/identity-service:0.0.2
+  #   container_name: identity-service
+  #   restart: always
+  #   depends_on:
+  #     - mysql
+  #   environment:
+  #     DBMS_CONNECTION: jdbc:mysql://mysql:3306/identity
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - warehouse-network
+
+  # notification-service:
+  # image: <account>/notification-service
+  # container_name: notification-service
+  # restart: always
+  # depends_on:
+  #   - neo4j
+  # environment:
+  #   NEO4J_URI: bolt://neo4j:7687
+  #   NEO4J_USERNAME: neo4j
+  #   NEO4J_PASSWORD: neo4j612435
+  # ports:
+  #   - "8082:8082"
+  # networks:
+  #   - warehouse-network

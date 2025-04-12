@@ -1,5 +1,27 @@
-{"properties": [{
-  "name": "brevo.key",
-  "type": "java.lang.String",
-  "description": "A description for 'brevo.key'"
-}]}
+{"properties": [
+  {
+    "name": "brevo.key",
+    "type": "java.lang.String",
+    "description": "A description for 'brevo.key'"
+  },
+  {
+    "name": "spring.kafka.consumer.key-serializer",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.kafka.consumer.key-serializer'"
+  },
+  {
+    "name": "spring.kafka.consumer.value-serializer",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.kafka.consumer.value-serializer'"
+  },
+  {
+    "name": "notification.brevo-key",
+    "type": "java.lang.String",
+    "description": "A description for 'notification.brevo-key'"
+  },
+  {
+    "name": "notification.brevoApiUrl",
+    "type": "java.lang.String",
+    "description": "A description for 'notification.brevoApiUrl'"
+  }
+]}

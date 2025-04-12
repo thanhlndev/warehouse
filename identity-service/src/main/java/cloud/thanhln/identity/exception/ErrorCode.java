@@ -29,9 +29,9 @@ public enum ErrorCode {
     ROLE_EXISTED(1015, "Role existed", HttpStatus.BAD_REQUEST),
     ;
 
-    private int code;
-    private String message;
-    private HttpStatusCode httpStatusCode;
+    private final int code;
+    private final String message;
+    private final HttpStatusCode httpStatusCode;
 
     ErrorCode(int code, String message, HttpStatusCode httpStatusCode) {
         this.code = code;

@@ -3,7 +3,9 @@ package cloud.thanhln.identity.constant;
 public class PredefinedRole {
     // Vai trò người dùng
     public static final String USER_ROLE = "USER";
-    // Vai trò admin
+
+    // Vai trò quản trị viên hệ thống
+
     public static final String ADMIN_ROLE = "ADMIN";
     // Vai trò quản lý kho hàng
     public static final String WAREHOUSE_MANAGER = "WAREHOUSE_MANAGER";
@@ -20,6 +22,9 @@ public class PredefinedRole {
     // Vai trò nhà cung cấp
     public static final String SUPPLIER = "SUPPLIER";
     public static final String des_SUPPLIER = "Nhà cung cấp";
+
+    // Vai trò khách hàng
+    //    public static final String CUSTOMER = "CUSTOMER";
 
     private PredefinedRole() {}
 }

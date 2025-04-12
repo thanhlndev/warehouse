@@ -19,6 +19,13 @@ spring:
 logging:
   level:
     org.hibernate.orm.jdbc.bind: TRACE
+  kafka:
+    bootstrap-servers: localhost:9094
+    consumer:
+        group-id: notification-group
+        auto-offset-reset: earliest
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 jwt:
 # key just for development evỉronment
 # generate key: https://generate-random.org/encryption-key-generator
