@@ -1,5 +1,7 @@
 package cloud.thanhln.notification.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,10 +23,18 @@ public class EmailController {
 
     EmailService emailService;
 
-    @PostMapping("/email/send")
-    ApiResponse<EmailResponse> sendEmail(@RequestBody SendEmailRequest request) {
-        emailService.sendEmail(request);
-        return ApiResponse.<EmailResponse>builder()
+    //    @PostMapping("/email/send")
+    //    ApiResponse<EmailResponse> sendEmail(@RequestBody SendEmailRequest request) {
+    //        //        emailService.sendEmail(request);
+    //        return ApiResponse.<EmailResponse>builder()
+    //                .result(emailService.sendEmail(request))
+    //                .build();
+    //    }
+
+    @PostMapping("/email/send1")
+    ApiResponse<List<EmailResponse>> sendEmail1(@RequestBody SendEmailRequest request) {
+        log.info("Controller: sendEmail1");
+        return ApiResponse.<List<EmailResponse>>builder()
                 .result(emailService.sendEmail(request))
                 .build();
     }

@@ -1,32 +1,31 @@
-<<<<<<< HEAD
-# Warehouse Management System
-=======
->>>>>>> 9a1dded (web-app)
 
-## Table of Contents
+# Ứng dụng quản lý kho hàng(Warehouse Management System)
 
-- Introduction
-- Project Structure
-- Services
-- Getting Started
-- Running the Application
-- Building the Application
+## Mục Lục (Table of Contents)
+
+- Giới thiệu (Introduction)
+- Cấu trúc của dự án (Project Structure)
+- Các dịch vụ trong dự án (Services)
+- Bắt đầu dự án (Getting Started)
+- Khởi chạy dự án (Running the Application)
+- Xây dựng ứng dụng (Building the Application)
 - Docker
-- Security
+- Bảo mật (Security)
 - API Documentation
 
-## Introduction
+## Giới thiệu dự án (Introduction)
+
+Dự án này là một Hệ thống quản lý kho bao gồm nhiều microservices. Mỗi dịch vụ chịu trách nhiệm cho một lĩnh vực cụ thể trong hệ thống quản lý kho.
 
 This project is a Warehouse Management System composed of multiple microservices. Each service is responsible for a specific domain within the warehouse management system.
 
-## Project Structure
+## Cấu trúc của dự án (Project Structure)
 
 ```
 .classpath
 .gitignore
 .project
 .settings/
-.vscode/
 api-gateway/
 config-service/
 discovery-service/
@@ -47,12 +46,12 @@ supplier-service/
 web-app/
 ```
 
-## Services
+## Các dịch vụ trong dự án Services
 
-- **API Gateway**: Handles routing and load balancing.
-- **Config Service**: Centralized configuration management.
-- **Discovery Service**: Service discovery using Eureka.
-- **Identity Service**: Manages user authentication and authorization.
+- **API Gateway**: Chịu trách nhiệm xử lý định tuyến và cân bằng tải - Handles routing and load balancing.
+- **Config Service**: Quản lý cấu hình - Centralized configuration management.
+- **Discovery Service**: Service discovery using Eureka. 
+- **Identity Service**: Quản lý xác thực và ủy quyền(phân quyền) người dùng - Manages user authentication and authorization.
 - **Inventory Service**: Manages inventory data.
 - **Notification Service**: Sends notifications.
 - **Order Service**: Manages orders.
@@ -60,9 +59,9 @@ web-app/
 - **Profile Service**: Manages user profiles.
 - **Supplier Service**: Manages supplier data.
 
-## Getting Started
+## Bắt đầu dự án (Getting Started)
 
-### Prerequisites
+### Điều kiện bắt buộc (Prerequisites)
 
 - Java 21
 - Maven 3.9.9
@@ -82,6 +81,7 @@ docker pull bitnami/kafka:latest
 docker pull bitnami/postgresql:latest
 docker pull mysql:latest
 docker pull neo4j:latest
+docker pull bitnami/mongodb:latest
 ```
 ### Using Docker Compose
 
@@ -129,12 +129,6 @@ docker image push <account>/<service-name>:<tag>
 docker network create warehouse-network
 ```
 
-### Run MySQL in Docker Network
-
-```sh
-docker run --network warehouse-network --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=identity -p 3306:3306 -d mysql:latest
-```
-
 ### Run Application in Docker Network
 
 ```sh
@@ -142,6 +136,8 @@ docker run --name <service-name> --network warehouse-network -p <port>:<port> -e
 ```
 
 ## Security
+
+Cấu hình bảo mật được quản lý trong lớp 'SecurityConfig' của mỗi dịch vụ. Ví dụ, xem SecurityConfig.java.
 
 Security configurations are managed in each service's `SecurityConfig` class. For example, see SecurityConfig.java.
 
