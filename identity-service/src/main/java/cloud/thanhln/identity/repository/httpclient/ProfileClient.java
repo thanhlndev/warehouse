@@ -1,5 +1,7 @@
 package cloud.thanhln.identity.repository.httpclient;
 
+import java.util.UUID;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,5 +24,5 @@ public interface ProfileClient {
     //	Object createProfile (@RequestBody ProfileCreationRequest request);
 
     @DeleteMapping(value = "/users/delete/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    void deleteProfileByUserId(String userId);
+    void deleteProfileByUserId(UUID userId);
 }

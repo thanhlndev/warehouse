@@ -12,6 +12,7 @@ import cloud.thanhln.notification.dto.response.EmailResponse;
 import cloud.thanhln.notification.exception.AppException;
 import cloud.thanhln.notification.exception.ErrorCode;
 import cloud.thanhln.notification.repositoryhttpclient.EmailClient;
+import feign.FeignException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -1,9 +1,10 @@
 package cloud.thanhln.identity.controller;
 
-import java.util.List;
+import java.util.UUID;
 
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cloud.thanhln.identity.dto.request.UserCreationRequest;
@@ -45,18 +47,20 @@ public class UserController {
     }
 
     @GetMapping
-    ApiResponse<List<UserResponse>> fetchAllUser() {
+    public ApiResponse<Page<UserResponse>> fetchAllUser(
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("Username: {}", authentication.getName());
         authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
-        return ApiResponse.<List<UserResponse>>builder()
-                .result(userService.fetchAllUser())
-                .build();
+
+        Page<UserResponse> pagedUsers = userService.fetchAllUsersPaged(page, size);
+
+        return ApiResponse.<Page<UserResponse>>builder().result(pagedUsers).build();
     }
 
     @GetMapping("/{userId}")
-    public ApiResponse<UserResponse> fetchUserById(@PathVariable String userId) {
+    public ApiResponse<UserResponse> fetchUserById(@PathVariable UUID userId) {
         return ApiResponse.<UserResponse>builder()
                 .result(userService.fetchUserById(userId))
                 .build();
@@ -70,14 +74,14 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    ApiResponse<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request) {
+    ApiResponse<UserResponse> updateUser(@PathVariable UUID userId, @RequestBody UserUpdateRequest request) {
         return ApiResponse.<UserResponse>builder()
                 .result(userService.updateUser(userId, request))
                 .build();
     }
 
     @DeleteMapping("/{userId}")
-    ApiResponse<String> deleteUser(@PathVariable String userId) {
+    ApiResponse<String> deleteUser(@PathVariable UUID userId) {
         userService.deleteUser(userId);
         return ApiResponse.<String>builder().result("User has been deleted").build();
     }

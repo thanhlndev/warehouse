@@ -1,5 +1,7 @@
 package cloud.thanhln.identity.dto.request;
 
+import java.util.UUID;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProfileCreationRequest {
-    String userId;
+    UUID userId;
     String fullName;
     String phone;
     String address;

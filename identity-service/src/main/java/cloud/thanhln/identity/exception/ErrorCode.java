@@ -27,6 +27,7 @@ public enum ErrorCode {
     // error for permission and role
     PERMISSION_EXISTED(1014, "Permission existed", HttpStatus.BAD_REQUEST),
     ROLE_EXISTED(1015, "Role existed", HttpStatus.BAD_REQUEST),
+    EMAIL_EXISTED(1016, "Email Existed", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;
