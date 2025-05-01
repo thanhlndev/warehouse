@@ -1,4 +1,4 @@
-package cloud.thanhln.post.dto;
+package cloud.thanhln.post.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import cloud.thanhln.post.dto.ApiResponse;
+import cloud.thanhln.post.dto.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
@@ -54,7 +54,6 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-    @SuppressWarnings({"unchecked", "null"})
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Object>> handlingValidValidation(MethodArgumentNotValidException ex) {
         String enumKey = ex.getFieldError().getDefaultMessage();
@@ -62,8 +61,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> attributes = null;
         try {
             errorCode = ErrorCode.valueOf(enumKey);
-            @SuppressWarnings("rawtypes")
-            ConstraintViolation constraintViolation =
+            ConstraintViolation<?> constraintViolation =
                     ex.getBindingResult().getAllErrors().getFirst().unwrap(ConstraintViolation.class);
             attributes = constraintViolation.getConstraintDescriptor().getAttributes();
 
