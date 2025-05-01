@@ -2,7 +2,7 @@ package cloud.thanhln.post.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cloud.thanhln.post.dto.ApiResponse;
+import cloud.thanhln.post.dto.response.ApiResponse;
 import cloud.thanhln.post.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             throws IOException {
         ErrorCode errorCode = ErrorCode.UNAUTHENTICATED;
 
-        response.setStatus(errorCode.getHttpStatusCode().value());
+        response.setStatus(errorCode.getStatusCode().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         ApiResponse<?> apiResponse = ApiResponse.builder()
