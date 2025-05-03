@@ -1,4 +1,4 @@
-package cloud.thanhln.api_gateway.dto.request;
+package cloud.thanhln.apigateway.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

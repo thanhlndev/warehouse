@@ -2,7 +2,7 @@ package cloud.thanhln.post.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cloud.thanhln.post.dto.ApiResponse;
+import cloud.thanhln.post.dto.response.ApiResponse;
 import cloud.thanhln.post.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

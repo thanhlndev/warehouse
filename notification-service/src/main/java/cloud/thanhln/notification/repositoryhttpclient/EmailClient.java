@@ -16,5 +16,5 @@ public interface EmailClient {
     //    EmailResponse sendEmail(@RequestHeader("api-key") String apiKey, @RequestBody EmailRequest request);
 
     @PostMapping(value = "/v3/smtp/email", produces = MediaType.APPLICATION_JSON_VALUE)
-    EmailResponse sendEmail1(@RequestHeader("api-key") String apiKey, @RequestBody SendSmtpEmail emailRequest);
+    EmailResponse sendEmail(@RequestHeader("api-key") String apiKey, @RequestBody SendSmtpEmail emailRequest);
 }

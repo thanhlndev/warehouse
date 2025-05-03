@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,7 +46,7 @@ public class UserService {
     PasswordEncoder passwordEncoder;
     ProfileClient profileClient;
     ProfileMapper profileMapper;
-    //    KafkaTemplate<String, String> kafkaTemplate;
+    KafkaTemplate<String, String> kafkaTemplate;
 
     //    @Transactional
     public UserResponse createUserRequest(UserCreationRequest request) {
@@ -95,23 +95,25 @@ public class UserService {
             profileCreationRequest.setAddress(request.getAddress());
             profileCreationRequest.setPhone(request.getPhone());
 
-            try {
-                Object profileResponse = profileClient.createProfile(profileCreationRequest);
-                log.info("Profile response: {}", profileResponse);
-            } catch (feign.RetryableException e) {
-                log.warn("Profile service unavailable, proceeding without profile creation: {}", e.getMessage());
-                // Tiếp tục mà không tạo profile, hoặc ném ngoại lệ tùy thuộc vào yêu cầu
-                // throw new AppException(ErrorCode.PROFILE_CREATION_FAILED, "Profile service unavailable: " +
-                // e.getMessage());
-            }
-        } catch (DataIntegrityViolationException e) {
-            log.error("Data integrity violation while creating user: {}", user.getUsername(), e);
-            throw new RuntimeException("Failed to create user due to database constraint: " + e.getMessage());
-        } catch (Exception e) {
-            log.error("Unexpected error while creating user: {}", user.getUsername(), e);
-            throw new RuntimeException("Unexpected error: " + e.getMessage());
+            //            try {
+            Object profileResponse = profileClient.createProfile(profileCreationRequest);
+            log.info("Profile response: {}", profileResponse);
+        } catch (feign.RetryableException e) {
+            log.warn("Profile service unavailable, proceeding without profile creation: {}", e.getMessage());
+            // Tiếp tục mà không tạo profile, hoặc ném ngoại lệ tùy thuộc vào yêu cầu
+            // throw new AppException(ErrorCode.PROFILE_CREATION_FAILED, "Profile service unavailable: " +
+            // e.getMessage());
         }
-
+        //        } catch (DataIntegrityViolationException e) {
+        //            log.error("Data integrity violation while creating user: {}", user.getUsername(), e);
+        //            throw new RuntimeException("Failed to create user due to database constraint: " + e.getMessage());
+        //        } catch (Exception e) {
+        //            log.error("Unexpected error while creating user: {}", user.getUsername(), e);
+        //            throw new RuntimeException("Unexpected error: " + e.getMessage());
+        //        }
+        log.info("Username: {}", user.getUsername());
+        // public message to kafka
+        kafkaTemplate.send("onboard-successful", "Welcome our new member " + user.getUsername());
         // Trả về response
         return userMapper.toUserResponse(user);
     }

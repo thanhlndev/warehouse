@@ -1,12 +1,12 @@
-package cloud.thanhln.api_gateway.repository;
+package cloud.thanhln.apigateway.repository;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.PostExchange;
 
-import cloud.thanhln.api_gateway.dto.request.IntrospectTokenRequest;
-import cloud.thanhln.api_gateway.dto.response.ApiResponse;
-import cloud.thanhln.api_gateway.dto.response.IntrospectTokenResponse;
+import cloud.thanhln.apigateway.dto.request.IntrospectTokenRequest;
+import cloud.thanhln.apigateway.dto.response.ApiResponse;
+import cloud.thanhln.apigateway.dto.response.IntrospectTokenResponse;
 import reactor.core.publisher.Mono;
 
 public interface IdentityClient {

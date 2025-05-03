@@ -62,7 +62,7 @@ public class EmailService {
 
     public List<EmailResponse> sendEmail(SendEmailRequest request) {
         log.info("_______________________________");
-        log.info("Service: sendEmail1 Response");
+        log.info("Service: sendEmail Response");
         log.info("Sending email to: {}", request.getTo());
         List<EmailResponse> responses = new ArrayList<>();
 
@@ -101,7 +101,7 @@ public class EmailService {
             emailRequest.setSubject(request.getSubject());
 
             try {
-                EmailResponse response = emailClient.sendEmail1(API_KEY, emailRequest);
+                EmailResponse response = emailClient.sendEmail(API_KEY, emailRequest);
                 log.info("Email sent to: {}", recipient.getEmail());
                 responses.add(response);
             } catch (FeignException e) {

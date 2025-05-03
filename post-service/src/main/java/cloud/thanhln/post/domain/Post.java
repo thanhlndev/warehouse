@@ -1,4 +1,4 @@
-package cloud.thanhln.post.entity;
+package cloud.thanhln.post.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package cloud.thanhln.api_gateway.configuration;
+package cloud.thanhln.apigateway.configuration;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,8 @@ import org.springframework.web.server.ServerWebExchange;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cloud.thanhln.api_gateway.dto.response.ApiResponse;
-import cloud.thanhln.api_gateway.service.IdentityService;
+import cloud.thanhln.apigateway.dto.response.ApiResponse;
+import cloud.thanhln.apigateway.service.IdentityService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
