@@ -9,6 +9,8 @@ volumes:
   mysql_data:
   neo4j_data:
   mongodb_data:
+  kafka_data:
+    driver: local
 
 services:
   mongodb-notification:
@@ -34,11 +36,15 @@ services:
     environment:
       - KAFKA_CFG_NODE_ID=0
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093 # @kafka:9093
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT # Explicitly set inter-broker communication
+      - ALLOW_PLAINTEXT_LISTENER=yes # Required for Bitnami image to allow plaintext
+    volumes:
+      - kafka_data:/var/lib/kafka/data
     networks:
       - warehouse-network
 
@@ -115,17 +121,17 @@ services:
   #   networks:
   #     - warehouse-network
 
-  # notification-service:
-  # image: <account>/notification-service
-  # container_name: notification-service
-  # restart: always
-  # depends_on:
-  #   - neo4j
-  # environment:
-  #   NEO4J_URI: bolt://neo4j:7687
-  #   NEO4J_USERNAME: neo4j
-  #   NEO4J_PASSWORD: neo4j612435
-  # ports:
-  #   - "8082:8082"
-  # networks:
-  #   - warehouse-network
+#  notification-service:
+#      image: <account>/notification-service
+#      container_name: notification-service
+#      restart: always
+#      depends_on:
+#        - kafka
+#        - mongodb-notification
+#      environment:
+#        - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+#        - SPRING_DATA_MONGODB_URI=mongodb://root:root@mongodb-notification:27017/notification-service?authSource=admin
+#      ports:
+#        - "8082:8082"
+#      networks:
+#        - warehouse-network

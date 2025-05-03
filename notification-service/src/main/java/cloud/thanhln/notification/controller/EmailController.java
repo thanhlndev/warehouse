@@ -2,6 +2,7 @@ package cloud.thanhln.notification.controller;
 
 import java.util.List;
 
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,11 +32,16 @@ public class EmailController {
     //                .build();
     //    }
 
-    @PostMapping("/email/send1")
-    ApiResponse<List<EmailResponse>> sendEmail1(@RequestBody SendEmailRequest request) {
-        log.info("Controller: sendEmail1");
+    @PostMapping("/email/send")
+    ApiResponse<List<EmailResponse>> sendEmail(@RequestBody SendEmailRequest request) {
+        log.info("Controller: sendEmail");
         return ApiResponse.<List<EmailResponse>>builder()
                 .result(emailService.sendEmail(request))
                 .build();
+    }
+
+    @KafkaListener(topics = "onboard-successful")
+    public void listen(String message) {
+        log.info("Message: {}", message);
     }
 }
