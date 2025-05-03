@@ -1,4 +1,4 @@
-package cloud.thanhln.api_gateway.dto.response;
+package cloud.thanhln.apigateway.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

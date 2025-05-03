@@ -113,7 +113,7 @@ public class AuthenticationService {
     private String generateToken(User user) {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getUsername())
+                .subject(user.getId().toString())
                 .issuer("thanhln.cloud")
                 .issueTime(new Date())
                 .expirationTime(new Date(

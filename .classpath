@@ -12,5 +12,10 @@
 	<classpathentry kind="src" path="profile-service/src/test/java"/>
 	<classpathentry exported="true" kind="lib" path="identity-service/target/identity-0.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="profile-service/.mvn/wrapper/maven-wrapper.jar"/>
+	<classpathentry kind="src" path=".apt_generated">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="identity-service/target/classes"/>
 </classpath>

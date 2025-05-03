@@ -1,4 +1,4 @@
-package cloud.thanhln.api_gateway;
+package cloud.thanhln.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

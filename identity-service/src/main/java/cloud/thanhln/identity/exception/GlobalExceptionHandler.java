@@ -54,7 +54,6 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-    @SuppressWarnings({"unchecked", "null"})
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Object>> handlingValidValidation(MethodArgumentNotValidException ex) {
         String enumKey = ex.getFieldError().getDefaultMessage();
@@ -62,8 +61,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> attributes = null;
         try {
             errorCode = ErrorCode.valueOf(enumKey);
-            @SuppressWarnings("rawtypes")
-            ConstraintViolation constraintViolation =
+            ConstraintViolation<?> constraintViolation =
                     ex.getBindingResult().getAllErrors().getFirst().unwrap(ConstraintViolation.class);
             attributes = constraintViolation.getConstraintDescriptor().getAttributes();
 

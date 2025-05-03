@@ -1,13 +1,13 @@
-package cloud.thanhln.api_gateway.service;
+package cloud.thanhln.apigateway.service;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.service.annotation.PostExchange;
 
-import cloud.thanhln.api_gateway.dto.request.IntrospectTokenRequest;
-import cloud.thanhln.api_gateway.dto.response.ApiResponse;
-import cloud.thanhln.api_gateway.dto.response.IntrospectTokenResponse;
-import cloud.thanhln.api_gateway.repository.IdentityClient;
+import cloud.thanhln.apigateway.dto.request.IntrospectTokenRequest;
+import cloud.thanhln.apigateway.dto.response.ApiResponse;
+import cloud.thanhln.apigateway.dto.response.IntrospectTokenResponse;
+import cloud.thanhln.apigateway.repository.IdentityClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
